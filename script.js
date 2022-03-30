@@ -3,6 +3,7 @@ var original = null;
 var story = [];
 var replacements = [];
 var modified = null;
+var replaceIndex = 0;
 
 /* Function indexSetup  (index.html)
   * Set up index.html dashboard with body onload
@@ -95,14 +96,6 @@ function nextPOS(){
   storyshow.innerHTML = modified;
 }
 
-
-/* Done with Part of Speech Entry (player.html)
- * @param none
- * @return none
- */ 
-function donePOS(){
-    document.location = "player.html";
-}
 /* Function Make Replaced String  (changes.html)
   * Integrates POS substitutions into modified string
   * @param array story
@@ -126,6 +119,46 @@ function makeReplacedString(){
   return modified;
 }
 
+/* PLAYER */
+
+/* Done with Part of Speech Entry (player.html)
+ * @param none
+ * @return none
+ */ 
+function donePOS(){
+    localStorage.setItem('replacements', JSON.stringify(replacements));
+    document.location = "player.html";
+}
+/* Function plyaerSetup (player.html)
+  * Set player.html dashboard with body onload
+  * @param none
+  * @returns none
+  * Note: prompt player with part of speech (POS) and receive replacement words
+  */
+function playerSetup(){
+  window.header.innerHTML="<h1>Mad Libs</h1><h2></h2><p></p>";
+  instructions = header.getElementsByTagName("h2")[0];
+  instructions.innerHTML=("Enter replacement words");
+  instructions = header.getElementsByTagName("p")[0];
+  instructions.innerHTML=("Find a crazy word that matches the part of speech displayed and click next.");
+  let pOS = document.createElement("div");
+  pOS.setAttribute("id","POS"); 
+  pOS.innerText = "verb";
+  window.actionbox.appendChild(pOS);
+  let newWord = document.createElement("input");
+  newWord.setAttribute("id","replacement");
+  window.actionbox.appendChild(newWord);
+  let nextButton = document.createElement("button");
+  nextButton.setAttribute("onClick","nextReplacement()");
+  nextButton.innerText="Next";
+  window.actionbox.appendChild(nextButton);
+  firstReplacement();
+}
+
+function firstReplacement(){
+    let pOS = document.getElementById("POS");
+    pOS.innerText = "adjective";
+}
 /* For reference
  * localStorage.setItem('original', original);
  * localStorage.setItem('story', JSON.stringify(story));
